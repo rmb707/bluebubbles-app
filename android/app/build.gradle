@@ -131,6 +131,13 @@ android {
             resValue "string", "file_provider", "com.bluebubbles.messaging.beta.fileprovider"
             applicationId "com.bluebubbles.messaging.beta"
         }
+        rob {
+            dimension "app"
+            resValue "string", "app_name_en", "Bubbles"
+            resValue "color", "ic_launcher_background", "#1f6feb"
+            resValue "string", "file_provider", "com.rmb707.bubbles.fileprovider"
+            applicationId "com.rmb707.bubbles"
+        }
         prod {
             getIsDefault().set(true)
             dimension "app"
@@ -156,6 +163,7 @@ android {
             def releaseSigning = hasReleaseKeystore ? signingConfigs.release : signingConfigs.debug
             productFlavors.joel.signingConfig signingConfigs.debug
             productFlavors.tanay.signingConfig signingConfigs.debug
+            productFlavors.rob.signingConfig signingConfigs.debug
             productFlavors.alpha.signingConfig releaseSigning
             productFlavors.beta.signingConfig releaseSigning
             productFlavors.prod.signingConfig releaseSigning

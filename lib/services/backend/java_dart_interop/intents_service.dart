@@ -1,6 +1,19 @@
 import 'dart:async';
 
 import 'package:bluebubbles/app/layouts/chat_creator/new_chat_creator.dart';
+import 'package:bluebubbles/app/layouts/findmy/findmy_page.dart';
+import 'package:bluebubbles/app/layouts/settings/settings_page.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/advanced/notification_providers_panel.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/advanced/private_api_panel.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/contacts/contacts_management_panel.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/conversation_list/chat_list_panel.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/message_view/attachment_panel.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/message_view/conversation_panel.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/misc/about_panel.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/profile/profile_panel.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/server/backup_restore_panel.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/system/notification_panel.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/theming/theming_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/scheduling/scheduled_messages_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/server/server_management_panel.dart';
 import 'package:bluebubbles/app/wrappers/theme_switcher.dart';
@@ -117,6 +130,10 @@ class IntentsService {
               (route) => route.isFirst,
             );
           }
+        } else if (intent.extra?["settingsPage"] != null) {
+          // Deep link from the launcher's Messages settings section
+          await StartupTasks.waitForUI();
+          await openSettingsPage(intent.extra!["settingsPage"].toString());
         } else if (intent.extra?["chatGuid"] != null) {
           final guid = intent.extra!["chatGuid"]!;
           await openChat(guid, isInitialIntent: isInitialIntent);
@@ -128,6 +145,44 @@ class IntentsService {
             await showFaceTimeOverlay(intent.extra?["callUuid"], intent.extra?["caller"], null, false);
           }
         }
+    }
+  }
+
+  /// Settings pages reachable from outside the app (the launcher's Messages section) via the
+  /// `settingsPage` intent extra. Opens the settings root first so Back returns there.
+  static final Map<String, Widget Function()> settingsPages = {
+    "root": () => const SizedBox.shrink(),
+    "theming": () => ThemingPanel(),
+    "notifications": () => NotificationPanel(),
+    "notificationProviders": () => NotificationProvidersPanel(),
+    "server": () => ServerManagementPanel(),
+    "privateApi": () => PrivateAPIPanel(),
+    "chatList": () => ChatListPanel(),
+    "conversation": () => ConversationPanel(),
+    "attachments": () => AttachmentPanel(),
+    "contacts": () => ContactsManagementPanel(),
+    "profile": () => ProfilePanel(),
+    "scheduled": () => const ScheduledMessagesPanel(),
+    "backup": () => BackupRestorePanel(),
+    "about": () => AboutPanel(),
+    "findmy": () => const FindMyPage(),
+  };
+
+  Future<void> openSettingsPage(String page) async {
+    final builder = settingsPages[page];
+    if (builder == null || !SettingsSvc.settings.finishedSetup.value) {
+      Logger.warn("Unknown or unavailable settings page: $page", tag: "IntentsService");
+      return;
+    }
+    final navigator = Navigator.of(Get.context!);
+    navigator.popUntil((route) => route.isFirst);
+    if (page == "findmy") {
+      navigator.push(ThemeSwitcher.buildPageRoute(builder: (_) => builder()));
+      return;
+    }
+    navigator.push(ThemeSwitcher.buildPageRoute(builder: (_) => const SettingsPage()));
+    if (page != "root") {
+      navigator.push(ThemeSwitcher.buildPageRoute(builder: (_) => builder()));
     }
   }
 

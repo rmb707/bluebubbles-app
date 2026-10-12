@@ -100,7 +100,7 @@ class ConversationViewState extends State<ConversationView> with ThemeHelpers<Co
       preferredSize: Size(
         double.infinity, // width is ignored by Scaffold
         (kIsDesktop ? (!iOS ? 25 : 5) : 0) +
-            90 * (iOS ? SettingsSvc.settings.avatarScale.value : 0) +
+            100 * (iOS ? SettingsSvc.settings.avatarScale.value : 0) + // iOS 26: 60pt avatar + glass name capsule
             (!iOS ? kToolbarHeight : 0),
       ),
       child: iOS ? CupertinoHeader(controller: controller) : MaterialHeader(controller: controller),

@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:bluebubbles/app/layouts/conversation_details/conversation_details.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/header/header_widgets.dart';
 import 'package:bluebubbles/app/components/avatars/contact_avatar_group_widget.dart';
+import 'package:bluebubbles/app/components/ios_glass.dart';
 import 'package:bluebubbles/app/state/chat_state_scope.dart';
 import 'package:bluebubbles/app/wrappers/theme_switcher.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
@@ -43,26 +44,23 @@ class CupertinoHeader extends StatelessWidget implements PreferredSizeWidget {
     return ClipRect(
       child: BackdropFilter(
           filter: ImageFilter.compose(
-              outer: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+              outer: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
               inner: ColorFilter.matrix(
                 CupertinoTheme.maybeBrightnessOf(context) == Brightness.dark ? darkMatrix : lightMatrix,
               )),
           child: Stack(
             children: [
               Container(
+                // iOS 26: no bar, just a scroll-edge fade behind floating glass controls
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     tileMode: TileMode.clamp,
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      context.theme.colorScheme.surfaceContainerHighest.withValues(alpha: 1.0),
-                      context.theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                      context.theme.colorScheme.surface.withValues(alpha: 0.92),
+                      context.theme.colorScheme.surface.withValues(alpha: 0.0),
                     ],
-                  ),
-                  border: Border(
-                    bottom:
-                        BorderSide(color: context.theme.colorScheme.outlineVariant.withValues(alpha: 0.25), width: 0.5),
                   ),
                 ),
                 child: Material(
@@ -177,7 +175,7 @@ class CupertinoHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize =>
-      Size.fromHeight((Get.context!.orientation == Orientation.landscape && Platform.isAndroid ? 55 : 75) *
+      Size.fromHeight((Get.context!.orientation == Orientation.landscape && Platform.isAndroid ? 55 : 106) *
           SettingsSvc.settings.avatarScale.value);
 }
 
@@ -202,54 +200,37 @@ class _UnreadIconState extends State<_UnreadIcon> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 3.0, right: 3),
-          child: Obx(() {
-            final icon = widget.controller.inSelectMode.value ? CupertinoIcons.xmark : CupertinoIcons.back;
-            return Text(
+    return Obx(() {
+      final icon = widget.controller.inSelectMode.value ? CupertinoIcons.xmark : CupertinoIcons.back;
+      final count = widget.controller.inSelectMode.value ? widget.controller.selected.length : ChatsSvc.unreadCount.value;
+      // iOS 26: 44pt glass circle; grows into a capsule with the unread count
+      return IosGlass(
+        circle: count == 0,
+        width: count == 0 ? 44 : null,
+        height: 44,
+        padding: count == 0 ? EdgeInsets.zero : const EdgeInsets.only(left: 10, right: 14),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
               String.fromCharCode(icon.codePoint),
               style: TextStyle(
                 fontFamily: icon.fontFamily,
                 package: icon.fontPackage,
-                fontSize: 36,
-                color: context.theme.colorScheme.primary,
+                fontSize: 26,
+                color: context.theme.colorScheme.onSurface,
               ),
-            );
-          }),
+            ),
+            if (count > 0)
+              Text(
+                count > 99 ? "99+" : count.toString(),
+                style: context.textTheme.bodyLarge!
+                    .copyWith(fontSize: 17, fontWeight: FontWeight.w600, color: context.theme.colorScheme.onSurface),
+              ),
+          ],
         ),
-        const SizedBox(width: 2),
-        Obx(() {
-          final _count =
-              widget.controller.inSelectMode.value ? widget.controller.selected.length : ChatsSvc.unreadCount.value;
-          if (_count == 0) return const SizedBox.shrink();
-          return Padding(
-              padding: const EdgeInsets.only(top: 3),
-              child: Container(
-                  height: 25.0,
-                  width: 25.0,
-                  constraints: const BoxConstraints(minWidth: 20),
-                  decoration: BoxDecoration(
-                    color: context.theme.colorScheme.primary,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: _count > 99 ? const EdgeInsets.symmetric(horizontal: 2.5) : EdgeInsets.zero,
-                    child: Text(
-                      _count.toString(),
-                      style: context.textTheme.bodyMedium!.copyWith(
-                          color: context.theme.colorScheme.onPrimary,
-                          fontSize: _count > 99
-                              ? context.textTheme.bodyMedium!.fontSize! - 1.0
-                              : context.textTheme.bodyMedium!.fontSize),
-                    ),
-                  )));
-        }),
-      ],
-    );
+      );
+    });
   }
 }
 
@@ -277,42 +258,42 @@ class _ChatIconAndTitleState extends CustomState<_ChatIconAndTitle, void, Conver
       final chatState = ChatStateScope.of(context);
       final _title = chatState.title.value ?? controller.chat.getTitle();
 
+      final nameStyle = context.theme.textTheme.bodyLarge!
+          .copyWith(fontSize: 17, fontWeight: FontWeight.w600, letterSpacing: -0.43);
       final children = [
         const IgnorePointer(
           ignoring: true,
           child: ContactAvatarGroupWidget(
-            size: 54,
+            size: 60,
           ),
         ),
-        const SizedBox(height: 5, width: 5),
-        Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: NavigationSvc.width(context) / 2.5,
-                ),
-                child: RichText(
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: context.theme.textTheme.bodyMedium,
-                    children: MessageHelper.buildEmojiText(
-                      _title,
-                      context.theme.textTheme.bodyMedium!,
-                    ),
+        Transform.translate(
+          offset: const Offset(0, -8),
+          child: IosGlass(
+            height: 32,
+            padding: const EdgeInsets.only(left: 14, right: 10),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: NavigationSvc.width(context) / 2),
+                  child: RichText(
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    text: TextSpan(style: nameStyle, children: MessageHelper.buildEmojiText(_title, nameStyle)),
                   ),
                 ),
-              ),
-              Icon(
-                CupertinoIcons.chevron_right,
-                size: context.theme.textTheme.bodyMedium!.fontSize!,
-                color: context.theme.colorScheme.outline.withValues(alpha: 0.5),
-              ),
-            ]),
+                const SizedBox(width: 2),
+                Icon(
+                  CupertinoIcons.chevron_right,
+                  size: 13,
+                  color: context.theme.colorScheme.onSurface.withValues(alpha: 0.35),
+                ),
+              ],
+            ),
+          ),
+        ),
       ];
 
       if (context.orientation == Orientation.landscape && Platform.isAndroid) {

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:bluebubbles/app/components/ios_glass.dart';
 import 'package:bluebubbles/app/components/custom/custom_bouncing_scroll_physics.dart';
 import 'package:bluebubbles/app/components/custom_text_editing_controllers.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/dialogs/custom_mention_dialog.dart';
@@ -176,14 +177,19 @@ class TextFieldComponentState extends State<TextFieldComponent> {
                       border: Border.fromBorderSide(BorderSide(
                         color: (isRecording & iOS)
                             ? context.theme.colorScheme.primary.withValues(alpha: 1.0)
-                            : context.theme.colorScheme.outlineVariant.withValues(alpha: 0.25),
-                        width: 1,
+                            // iOS 26: filled glass capsule with only a hairline edge
+                            : IosGlass.edge(context).color,
+                        width: (isRecording & iOS) ? 1 : 0.5,
                       )),
                       borderRadius: BorderRadius.circular(20),
                     )
                   : null,
               decoration: BoxDecoration(
-                color: (!iOS || hasBackground) ? context.theme.colorScheme.surfaceContainerHighest : null,
+                color: iOS
+                    ? IosGlass.fill(context)
+                    : hasBackground
+                        ? context.theme.colorScheme.surfaceContainerHighest
+                        : context.theme.colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(20),
               ),
               clipBehavior: Clip.antiAlias,

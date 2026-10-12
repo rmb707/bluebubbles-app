@@ -59,7 +59,7 @@ class SettingsOptions<T extends Object> extends StatelessWidget {
     if (SettingsSvc.settings.skin.value == Skins.iOS && useCupertino) {
       final texts = options.map((e) => Text(_labelFor(e),
           style: context.theme.textTheme.bodyLarge!
-              .copyWith(color: e == initial ? context.theme.colorScheme.onPrimary : null)));
+              .copyWith(fontSize: 15, fontWeight: e == initial ? FontWeight.w600 : FontWeight.w400)));
       final map = Map<T, Widget>.fromIterables(options, cupertinoCustomWidgets ?? texts);
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 13),
@@ -70,8 +70,9 @@ class SettingsOptions<T extends Object> extends StatelessWidget {
           child: CupertinoSlidingSegmentedControl<T>(
             children: map,
             groupValue: initial,
-            thumbColor: context.theme.colorScheme.primary,
-            backgroundColor: Colors.transparent,
+            // iOS: tertiarySystemFill track with a raised thumb (systemGray 2 dark / white light)
+            thumbColor: ThemeSvc.inDarkMode(context) ? const Color(0xFF636366) : Colors.white,
+            backgroundColor: const Color(0xFF767680).withValues(alpha: ThemeSvc.inDarkMode(context) ? 0.24 : 0.12),
             onValueChanged: onChanged,
             padding: EdgeInsets.zero,
           ),

@@ -1,4 +1,5 @@
 import 'package:bluebubbles/helpers/helpers.dart';
+import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,10 +20,11 @@ class BBSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (context.iOS) {
+      // iOS switches are always systemGreen, whatever the accent color
       return CupertinoSwitch(
         value: value,
         onChanged: onChanged,
-        activeTrackColor: activeColor,
+        activeTrackColor: ThemeSvc.inDarkMode(context) ? const Color(0xFF30D158) : const Color(0xFF34C759),
       );
     }
 

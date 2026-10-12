@@ -84,11 +84,15 @@ class ThemesService {
 
   static final oledDarkTheme = FlexColorScheme(
     textTheme: Typography.englishLike2021.merge(Typography.whiteMountainView),
+    // iOS dark system colors: systemBlue accent, secondarySystemGroupedBackground cells, systemGray outline
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.blue,
+      seedColor: HexColor("0A84FF"),
+      primary: HexColor("0A84FF"),
+      onPrimary: Colors.white,
       surface: Colors.black,
-      surfaceContainerHighest: HexColor("323332"),
-      error: Colors.red,
+      surfaceContainerHighest: HexColor("1C1C1E"),
+      outline: HexColor("8E8E93"),
+      error: HexColor("FF453A"),
       brightness: Brightness.dark,
     ),
     useMaterial3: true,
@@ -98,7 +102,7 @@ class ThemesService {
       oniMessageBubbleColor: Colors.white,
       smsBubbleColor: HexColor("43CC47"),
       onSmsBubbleColor: Colors.white,
-      receivedBubbleColor: HexColor("323332"),
+      receivedBubbleColor: HexColor("262628"),
       onReceivedBubbleColor: Colors.white,
     ),
     BubbleText(
@@ -134,10 +138,14 @@ class ThemesService {
   static final whiteLightTheme = () {
     final base = FlexColorScheme(
       textTheme: Typography.englishLike2021.merge(Typography.blackMountainView),
+      // iOS light system colors
       colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.blue,
+        seedColor: HexColor("007AFF"),
+        primary: HexColor("007AFF"),
+        onPrimary: Colors.white,
         surface: Colors.white,
-        error: Colors.red,
+        outline: HexColor("8E8E93"),
+        error: HexColor("FF3B30"),
         brightness: Brightness.light,
       ),
       useMaterial3: true,
@@ -146,7 +154,7 @@ class ThemesService {
       splashFactory: InkSparkle.splashFactory,
       colorScheme: base.colorScheme.copyWith(
         surface: Colors.white,
-        surfaceContainerHighest: HexColor('F2F2F6'),
+        surfaceContainerHighest: HexColor('F2F2F7'),
       ),
       extensions: [
         BubbleColors(
@@ -154,7 +162,7 @@ class ThemesService {
           oniMessageBubbleColor: Colors.white,
           smsBubbleColor: HexColor("43CC47"),
           onSmsBubbleColor: Colors.white,
-          receivedBubbleColor: HexColor("e9e9ea"),
+          receivedBubbleColor: HexColor("E9E9EB"),
           onReceivedBubbleColor: Colors.black,
         ),
         BubbleText(

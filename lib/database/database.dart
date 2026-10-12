@@ -20,7 +20,7 @@ class Database {
 
   /// Bump this whenever preset theme definitions change (colors, font sizes,
   /// etc.) to force existing installs to re-seed preset themes on next launch.
-  static int themesVersion = 6;
+  static int themesVersion = 7; // 7: iOS system colors in OLED Dark / Bright White
 
   static late final Store store;
   static late final Box<Attachment> attachments;

@@ -272,7 +272,78 @@ objectbox:
 
 # The following section is specific to Flutter.
 flutter:
-  # fonts:
+  # SF Pro, generated locally by scripts/make-sf-fonts.sh (gitignored, never distributed).
+  # Registered under Flutter's Cupertino family names too, so Cupertino widgets render SF on Android.
+  fonts:
+    - family: SF Pro Text
+      fonts:
+        - asset: assets/fonts/sf/SFProText-Light.ttf
+          weight: 300
+        - asset: assets/fonts/sf/SFProText-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/sf/SFProText-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/sf/SFProText-Semibold.ttf
+          weight: 600
+        - asset: assets/fonts/sf/SFProText-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/sf/SFProText-Heavy.ttf
+          weight: 800
+        - asset: assets/fonts/sf/SFProText-RegularItalic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/sf/SFProText-SemiboldItalic.ttf
+          weight: 600
+          style: italic
+    - family: SF Pro Display
+      fonts:
+        - asset: assets/fonts/sf/SFProDisplay-Light.ttf
+          weight: 300
+        - asset: assets/fonts/sf/SFProDisplay-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/sf/SFProDisplay-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/sf/SFProDisplay-Semibold.ttf
+          weight: 600
+        - asset: assets/fonts/sf/SFProDisplay-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/sf/SFProDisplay-Heavy.ttf
+          weight: 800
+    - family: CupertinoSystemText
+      fonts:
+        - asset: assets/fonts/sf/SFProText-Light.ttf
+          weight: 300
+        - asset: assets/fonts/sf/SFProText-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/sf/SFProText-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/sf/SFProText-Semibold.ttf
+          weight: 600
+        - asset: assets/fonts/sf/SFProText-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/sf/SFProText-Heavy.ttf
+          weight: 800
+        - asset: assets/fonts/sf/SFProText-RegularItalic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/sf/SFProText-SemiboldItalic.ttf
+          weight: 600
+          style: italic
+    - family: CupertinoSystemDisplay
+      fonts:
+        - asset: assets/fonts/sf/SFProDisplay-Light.ttf
+          weight: 300
+        - asset: assets/fonts/sf/SFProDisplay-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/sf/SFProDisplay-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/sf/SFProDisplay-Semibold.ttf
+          weight: 600
+        - asset: assets/fonts/sf/SFProDisplay-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/sf/SFProDisplay-Heavy.ttf
+          weight: 800
+
   # - family: AppleColorEmoji
   #   fonts:
   #     - asset: assets/fonts/AppleColorEmoji.ttf

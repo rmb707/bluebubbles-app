@@ -269,7 +269,7 @@ final RegExp emojiRegex = RegExp(
 
 const bigEmojiScaleFactor = 3.0;
 
-const appName = "BlueBubbles";
+const appName = "Bubbles";
 
 const randomAvatarBackgroundColors = [
   // Pinks

@@ -60,3 +60,6 @@ pubspeck.lock
 .fvmrc
 
 .claude/projects
+
+# SF Pro (Apple-licensed, generated locally by scripts/make-sf-fonts.sh — never commit)
+assets/fonts/sf/

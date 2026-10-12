@@ -21,7 +21,7 @@ mixin ContactsManagementHelpersMixin {
 
   String permissionStatusDescription(PermissionStatus status) {
     if (status.isGranted) {
-      return "BlueBubbles can read your device's contacts.";
+      return "Bubbles can read your device's contacts.";
     }
     if (status.isPermanentlyDenied) {
       return "Access was denied and can only be re-enabled from system Settings.";

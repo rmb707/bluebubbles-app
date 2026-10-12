@@ -44,7 +44,7 @@ void showVersionDialog(BuildContext context) {
                           child: ListBody(
                             children: <Widget>[
                               Text(
-                                "BlueBubbles",
+                                "Bubbles",
                                 style: Theme.of(context).textTheme.titleLarge,
                               ),
                               if (!kIsDesktop)
@@ -78,7 +78,7 @@ void showVersionDialog(BuildContext context) {
                       builder: (BuildContext context) => Theme(
                         data: Theme.of(context),
                         child: LicensePage(
-                          applicationName: "BlueBubbles",
+                          applicationName: "Bubbles",
                           applicationVersion: snapshot.hasData ? snapshot.data!.version : "",
                           applicationIcon: Image.asset(
                             "assets/icon/icon.png",

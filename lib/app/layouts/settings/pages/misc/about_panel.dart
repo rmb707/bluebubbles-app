@@ -38,7 +38,7 @@ class _AboutPanelState extends State<AboutPanel> with ThemeHelpers {
                   children: [
                     SettingsTile(
                         title: "BlueBubbles Website",
-                        subtitle: "Visit the BlueBubbles Homepage",
+                        subtitle: "Visit the Bubbles Homepage",
                         onTap: () async {
                           await launchUrl(Uri(scheme: "https", host: "bluebubbles.app"),
                               mode: LaunchMode.externalApplication);
@@ -52,7 +52,7 @@ class _AboutPanelState extends State<AboutPanel> with ThemeHelpers {
                     const SettingsDivider(),
                     SettingsTile(
                         title: "Documentation",
-                        subtitle: "RTFM: Read the [Fine] Manual and learn how to use BlueBubbles or fix common issues",
+                        subtitle: "RTFM: Read the [Fine] Manual and learn how to use Bubbles or fix common issues",
                         onTap: () async {
                           await launchUrl(Uri(scheme: "https", host: "docs.bluebubbles.app"),
                               mode: LaunchMode.externalApplication);
@@ -66,7 +66,7 @@ class _AboutPanelState extends State<AboutPanel> with ThemeHelpers {
                     const SettingsDivider(),
                     SettingsTile(
                         title: "Source Code",
-                        subtitle: "View the source code for BlueBubbles, and contribute!",
+                        subtitle: "View the source code for Bubbles, and contribute!",
                         onTap: () async {
                           await launchUrl(Uri(scheme: "https", host: "github.com", path: "BlueBubblesApp"),
                               mode: LaunchMode.externalApplication);
@@ -191,7 +191,7 @@ class _AboutPanelState extends State<AboutPanel> with ThemeHelpers {
                           ],
                         );
                       },
-                      subtitle: "Meet the developers behind BlueBubbles",
+                      subtitle: "Meet the developers behind Bubbles",
                       leading: const SettingsLeadingIcon(
                         iosIcon: CupertinoIcons.person_alt,
                         materialIcon: Icons.person,

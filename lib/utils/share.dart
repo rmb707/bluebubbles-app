@@ -76,7 +76,7 @@ class Share {
         await showBBDialog(
             context: Get.context!,
             title: "Location Permission",
-            body: "BlueBubbles needs the Location permission to send Locations",
+            body: "Bubbles needs the Location permission to send Locations",
             actions: [
               BBDialogAction(
                 text: "Cancel",

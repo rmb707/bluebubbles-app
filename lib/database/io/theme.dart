@@ -242,7 +242,9 @@ class ThemeStruct {
           TextDecorationStyle? decorationStyle,
           double? decorationThickness,
         }) {
-          return textStyle!;
+          // No Google font chosen: use SF Pro, switching to Display at 20pt like iOS does
+          final size = textStyle!.fontSize ?? 14;
+          return textStyle.copyWith(fontFamily: size >= 20 ? 'SF Pro Display' : 'SF Pro Text');
         };
     final typography = brightness == Brightness.light
         ? Typography.englishLike2021.merge(Typography.blackMountainView)

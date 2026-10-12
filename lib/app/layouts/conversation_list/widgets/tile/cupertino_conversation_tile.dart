@@ -55,15 +55,18 @@ class _CupertinoConversationTileState extends CustomState<CupertinoConversationT
             dense: SettingsSvc.settings.denseChatTiles.value,
             contentPadding: const EdgeInsets.only(left: 0),
             visualDensity: SettingsSvc.settings.denseChatTiles.value ? VisualDensity.compact : null,
-            minVerticalPadding: 6,
+            minVerticalPadding: 10,
             horizontalTitleGap: 10,
             title: Row(
               children: [
                 Expanded(
                   child: ChatTitle(
                     parentController: controller,
+                    // iOS: 17pt semibold, -0.43 tracking
                     style: context.theme.textTheme.bodyLarge!.copyWith(
-                        fontWeight: controller.shouldHighlight.value ? FontWeight.w600 : FontWeight.w500,
+                        fontSize: 17,
+                        letterSpacing: -0.43,
+                        fontWeight: FontWeight.w600,
                         color: controller.shouldHighlight.value
                             ? context.theme.colorScheme.onBubble(context, controller.chat.isIMessage)
                             : null),
@@ -83,8 +86,11 @@ class _CupertinoConversationTileState extends CustomState<CupertinoConversationT
                           ? context.theme.colorScheme
                               .onBubble(context, controller.chat.isIMessage)
                               .withValues(alpha: 0.85)
-                          : context.theme.colorScheme.outline,
-                      height: 1.5,
+                          : const Color(0xFF8E8E93),
+                      // iOS: 15pt regular, 20pt line height, -0.23 tracking, secondaryLabel gray
+                      fontSize: 15,
+                      letterSpacing: -0.23,
+                      height: 1.33,
                     ),
                   ),
             ),
@@ -165,10 +171,11 @@ class _CupertinoTrailingState extends CustomState<CupertinoTrailing, void, Conve
                         ? context.theme.colorScheme.error
                         : controller.shouldHighlight.value
                             ? context.theme.colorScheme.onBubble(context, controller.chat.isIMessage)
-                            : context.theme.colorScheme.outline.withValues(alpha: 0.75),
+                            : const Color(0xFF8E8E93),
                     fontWeight: controller.shouldHighlight.value ? FontWeight.w500 : null,
-                  )
-                  .apply(fontSizeFactor: 1.15),
+                    fontSize: 15,
+                    letterSpacing: -0.23,
+                  ),
               overflow: TextOverflow.clip,
             ),
             const SizedBox(width: 8),
@@ -182,8 +189,8 @@ class _CupertinoTrailingState extends CustomState<CupertinoTrailing, void, Conve
                     CupertinoIcons.forward,
                     color: controller.shouldHighlight.value
                         ? context.theme.colorScheme.onBubble(context, controller.chat.isIMessage)
-                        : context.theme.colorScheme.outline.withValues(alpha: 0.75),
-                    size: 16,
+                        : const Color(0xFF8E8E93).withValues(alpha: 0.6),
+                    size: 15,
                   ),
                 ),
                 if (chatState.muteType.value == "mute")

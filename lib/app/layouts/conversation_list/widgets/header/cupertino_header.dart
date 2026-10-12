@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/widgets/header/header_widgets.dart';
-import 'package:bluebubbles/app/layouts/conversation_list/pages/search/search_view.dart';
 import 'package:bluebubbles/app/wrappers/fade_on_scroll.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,65 +59,8 @@ class CupertinoHeader extends StatelessWidget {
                     children: [
                       const SyncIndicator(size: 16),
                       const SizedBox(width: 10.0),
-                      ClipOval(
-                        child: Material(
-                          color: context.theme.colorScheme.surfaceContainerHighest,
-                          child: SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: InkWell(
-                              child: Icon(CupertinoIcons.search,
-                                  color: context.theme.colorScheme.onSurfaceVariant, size: 18),
-                              onTap: () {
-                                NavigationSvc.pushLeft(context, const SearchView());
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
                       const CupertinoChatListFilterButton(),
                       const SizedBox(width: 10.0),
-                      if (SettingsSvc.settings.moveChatCreatorToHeader.value)
-                        ClipOval(
-                          child: Material(
-                            color: context.theme.colorScheme.surfaceContainerHighest,
-                            child: InkWell(
-                              child: SizedBox(
-                                width: 30,
-                                height: 30,
-                                child: Icon(
-                                  CupertinoIcons.pencil,
-                                  color: context.theme.colorScheme.onSurfaceVariant,
-                                  size: 20,
-                                ),
-                              ),
-                              onTap: () => controller.openNewChatCreator(context),
-                            ),
-                          ),
-                        ),
-                      if (SettingsSvc.settings.moveChatCreatorToHeader.value &&
-                          SettingsSvc.settings.cameraFAB.value &&
-                          !kIsWeb &&
-                          !kIsDesktop)
-                        const SizedBox(width: 10.0),
-                      if (SettingsSvc.settings.moveChatCreatorToHeader.value &&
-                          SettingsSvc.settings.cameraFAB.value &&
-                          !kIsWeb &&
-                          !kIsDesktop)
-                        ClipOval(
-                          child: Material(
-                            color: context.theme.colorScheme.surfaceContainerHighest,
-                            child: InkWell(
-                                child: SizedBox(
-                                  width: 30,
-                                  height: 30,
-                                  child: Icon(CupertinoIcons.camera,
-                                      color: context.theme.colorScheme.onSurfaceVariant, size: 20),
-                                ),
-                                onTap: () => controller.openCamera(context)),
-                          ),
-                        ),
-                      if (SettingsSvc.settings.moveChatCreatorToHeader.value) const SizedBox(width: 10.0),
                       const Material(
                         color: Colors.transparent,
                         shape: CircleBorder(),

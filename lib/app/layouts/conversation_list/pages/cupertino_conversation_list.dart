@@ -6,7 +6,7 @@ import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/widgets/tile/conversation_tile.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/widgets/tile/pinned_conversation_tile.dart';
-import 'package:bluebubbles/app/layouts/conversation_list/widgets/conversation_list_fab.dart';
+import 'package:bluebubbles/app/layouts/conversation_list/widgets/footer/cupertino_glass_footer.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/widgets/filters/custom_group_filter_chip_row.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/widgets/header/cupertino_header.dart';
 import 'package:bluebubbles/app/wrappers/scrollbar_wrapper.dart';
@@ -58,10 +58,6 @@ class CupertinoConversationListState extends State<CupertinoConversationList> wi
           ? Colors.transparent
           : context.theme.colorScheme.surface,
       extendBodyBehindAppBar: !showArchived && !showUnknown,
-      floatingActionButton: Obx(() =>
-          !SettingsSvc.settings.moveChatCreatorToHeader.value && !showArchived && !showUnknown
-              ? ConversationListFAB(parentController: controller)
-              : const SizedBox.shrink()),
       appBar: showArchived || showUnknown
           ? BBAppBar(
               titleText: showArchived ? "Archive" : "Unknown Senders",
@@ -299,8 +295,9 @@ class CupertinoConversationListState extends State<CupertinoConversationList> wi
                       }
 
                       return SliverPadding(
-                        // Bottom padding is 20 to account for the bottom pill bar.
-                        padding: const EdgeInsets.only(top: 10, bottom: 20),
+                        // Bottom padding clears the iOS 26 glass search/compose bar.
+                        padding: EdgeInsets.only(
+                            top: 10, bottom: CupertinoGlassFooter.height + 24 + MediaQuery.of(context).padding.bottom),
                         sliver: SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
@@ -357,6 +354,7 @@ class CupertinoConversationListState extends State<CupertinoConversationList> wi
                 )),
           ),
           if (!showArchived && !showUnknown) CupertinoMiniHeader(controller: controller),
+          if (!showArchived && !showUnknown && !kIsDesktop) CupertinoGlassFooter(controller: controller),
         ],
       ),
     );

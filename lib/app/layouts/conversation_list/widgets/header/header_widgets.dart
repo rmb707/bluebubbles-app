@@ -38,8 +38,10 @@ class HeaderText extends StatelessWidget {
                 : "Messages",
         style: context.textTheme.headlineLarge!.copyWith(
           color: context.theme.colorScheme.onSurface,
-          fontWeight: FontWeight.w400,
-          fontSize: fontSize,
+          // iOS large title: 34pt bold, +0.37 tracking
+          fontWeight: SettingsSvc.settings.skin.value == Skins.iOS ? FontWeight.w700 : FontWeight.w400,
+          fontSize: fontSize ?? (SettingsSvc.settings.skin.value == Skins.iOS ? 34 : null),
+          letterSpacing: SettingsSvc.settings.skin.value == Skins.iOS ? 0.37 : null,
         ),
         maxLines: 1,
       ),

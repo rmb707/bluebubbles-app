@@ -139,7 +139,8 @@ class _ContactAvatarWidgetState extends State<ContactAvatarWidget> with ThemeHel
           initials!,
           key: Key("$keyPrefix-avatar-text"),
           style: TextStyle(
-            fontSize: size * 0.5,
+            fontSize: iOS ? size * 0.42 : size * 0.5,
+            fontWeight: iOS ? FontWeight.w600 : null,
             height: 1.0,
             leadingDistribution: TextLeadingDistribution.even,
             color: material ? context.theme.colorScheme.surface : Colors.white,
@@ -221,17 +222,18 @@ class _ContactAvatarWidgetState extends State<ContactAvatarWidget> with ThemeHel
             padding: widget.padding,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: AlignmentDirectional.topStart,
-                end: AlignmentDirectional.bottomEnd,
                 colors: [
+                  // iOS 26 monogram gradient, sampled from the Messages list in the iOS simulator
                   !colorfulAvatars
-                      ? (ThemeSvc.inDarkMode(context) ? HexColor("8A8686") : HexColor("B8B4B4"))
+                      ? (ThemeSvc.inDarkMode(context) ? HexColor("57536B") : HexColor("A5ABB9"))
                       : (iOS ? colors[1] : colors[0]),
                   !colorfulAvatars
-                      ? (ThemeSvc.inDarkMode(context) ? HexColor("6B6868") : HexColor("928E8E"))
+                      ? (ThemeSvc.inDarkMode(context) ? HexColor("312848") : HexColor("858A98"))
                       : colors[0],
                 ],
-                stops: [0.3, 0.9],
+                begin: iOS ? Alignment.topCenter : AlignmentDirectional.topStart,
+                end: iOS ? Alignment.bottomCenter : AlignmentDirectional.bottomEnd,
+                stops: iOS ? null : const [0.3, 0.9],
               ),
               border: Border.all(
                   color: iOS || SettingsSvc.settings.skin.value == Skins.Samsung

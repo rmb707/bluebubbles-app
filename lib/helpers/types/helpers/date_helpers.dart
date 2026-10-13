@@ -34,6 +34,9 @@ String buildDate(DateTime? dateTime) {
     date = DateFormat.MMMd().format(dateTime);
   } else if (SettingsSvc.settings.skin.value == Skins.Samsung && DateTime.now().year != dateTime.toLocal().year) {
     date = DateFormat.yMMMd().format(dateTime);
+  } else if (SettingsSvc.settings.skin.value == Skins.iOS) {
+    // iOS Messages shows older dates with a two-digit year (9/23/26)
+    date = DateFormat("M/d/yy").format(dateTime);
   } else {
     date = DateFormat.yMd().format(dateTime);
   }

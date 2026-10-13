@@ -5,6 +5,7 @@ import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class _TimestampParts {
   final String? date;
@@ -31,7 +32,15 @@ class TimestampSeparator extends StatelessWidget {
     } else if (SettingsSvc.settings.skin.value != Skins.Samsung && withinTimeThreshold(message, olderMessage)) {
       final time = message.dateCreated!;
       if (SettingsSvc.settings.skin.value == Skins.iOS) {
-        return _TimestampParts(date: time.isToday() ? "Today" : buildDate(time), time: buildTime(time));
+        // iOS: "Today 3:53 PM", "Wednesday 3:53 PM", then "Wed, Sep 17 at 3:53 PM" / "Sep 17, 2025 at 3:53 PM"
+        final local = time.toLocal();
+        if (time.isToday() || DateTime.now().difference(local).inDays < 7) {
+          return _TimestampParts(date: time.isToday() ? "Today" : buildDate(time), time: buildTime(time));
+        }
+        final date = local.year == DateTime.now().year
+            ? DateFormat("EEE, MMM d").format(local)
+            : DateFormat("MMM d, y").format(local);
+        return _TimestampParts(date: date, time: "at ${buildTime(time)}");
       } else {
         return _TimestampParts(
             date: time.isToday() ? "Today" : buildSeparatorDateMaterial(time), time: buildTime(time));
